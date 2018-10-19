@@ -1,0 +1,38 @@
+spring.profiles.active: default
+---
+spring:
+  jpa:
+    hibernate.ddl-auto: create-drop
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: false
+  data.elasticsearch.properties:
+    path.home: target/elastic
+    transport.tcp.connect_timeout: 120s
+endpoints:
+  actuator:
+    enabled: true
+management:
+  security:
+    enabled: false  # disables security for Actuator endpoints, always change to true for PROD config
+---
+spring:
+  profiles: docker
+  data.jest.uri: https://vpc-mystarbucks-cs5lae4bolu3xaephzvr4nt42y.us-east-1.es.amazonaws.com:9200
+  datasource:  # Docker MySQL settings
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysqldb.ccfi6jacoird.us-east-1.rds.amazonaws.com:3306/starbucks  # see docker-compose.yml for customizing db name, username & password
+    username: starbucks_user
+    password: ilikecoffee
+---
+spring:
+  profiles: aws
+  data.jest:
+    uri: https://vpc-mystarbucks-cs5lae4bolu3xaephzvr4nt42y.us-east-1.es.amazonaws.com  # URI for AWS Elasticsearch index
+    aws-region: us-east-1
+  datasource:  # RDS settings
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysqldb.ccfi6jacoird.us-east-1.rds.amazonaws.com:3306/starbucks
+    username: mysqldb
+    password: prakashthota
+---
+
